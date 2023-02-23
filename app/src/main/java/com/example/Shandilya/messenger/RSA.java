@@ -121,9 +121,9 @@ public class RSA extends AppCompatActivity {
             KeySpec keySpec = new X509EncodedKeySpec(Base64.decode(publicKey.trim().getBytes(), Base64.DEFAULT));
             Key key = keyFac.generatePublic(keySpec);
 
-            // get an RSA cipher object and print the provider
+
             final Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
-            // encrypt the plain text using the public key
+
             cipher.init(Cipher.ENCRYPT_MODE, key);
 
             byte[] encryptedBytes = cipher.doFinal(Message.getBytes("UTF-8"));
@@ -132,7 +132,7 @@ public class RSA extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        return encryptedBase64.replaceAll("(\\r|\\n)", "");//new line or carriage return replace kar and send kr
+        return encryptedBase64.replaceAll("(\\r|\\n)", "");
     }
 
     public static String decryptRSA(String encryptedData,String privateKey){
@@ -143,6 +143,7 @@ public class RSA extends AppCompatActivity {
             Key key = keyFactory.generatePrivate(keySpec);
 
             final Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
+            cipher.init(Cipher.DECRYPT_MODE,key);
 
             byte[] encryptedBytes = Base64.decode(encryptedData,Base64.DEFAULT);
             byte[] decryptedBytes = cipher.doFinal(encryptedBytes);

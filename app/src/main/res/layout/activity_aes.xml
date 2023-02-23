@@ -97,9 +97,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/outputText"
+            android:textColor="#00FF00"
             android:layout_marginBottom="13dp"
             android:layout_marginLeft="13dp"
-            android:background="#FFFF00"
+            android:background="#000000"
             android:layout_marginRight="13dp"
             android:textIsSelectable="true"
             />

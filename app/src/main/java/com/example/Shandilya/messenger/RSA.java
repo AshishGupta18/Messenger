@@ -67,7 +67,7 @@ public class RSA extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 temp=inputMessage.getText().toString();
-                String encrypted = encryptRSAToString(temp, publicKeyBytesBase64);
+                String encrypted = encryptRSA(temp, publicKeyBytesBase64);
                 //  Log.d("NIKHIL", "encrypt key:" +encrypted);
                 Output.setText(encrypted);
                 toSend=encrypted;
@@ -77,7 +77,10 @@ public class RSA extends AppCompatActivity {
         dec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                temp = inputMessage.getText().toString();
+                String decrypt = decryptRSA(temp,privateKeyBytesBase64);
+                Output.setText(decrypt);
+                toSend=decrypt;
             }
         });
 
@@ -111,7 +114,7 @@ public class RSA extends AppCompatActivity {
     }
 
 
-    public static String encryptRSAToString(String Message, String publicKey) {
+    public static String encryptRSA(String Message, String publicKey) {
         String encryptedBase64 = "";
         try {
             KeyFactory keyFac = KeyFactory.getInstance("RSA");
@@ -130,6 +133,24 @@ public class RSA extends AppCompatActivity {
         }
 
         return encryptedBase64.replaceAll("(\\r|\\n)", "");//new line or carriage return replace kar and send kr
+    }
+
+    public static String decryptRSA(String encryptedData,String privateKey){
+        String decryptedData = "";
+        try{
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            KeySpec keySpec = new PKCS8EncodedKeySpec(Base64.decode(privateKey.trim().getBytes(),Base64.DEFAULT));
+            Key key = keyFactory.generatePrivate(keySpec);
+
+            final Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWITHSHA-256ANDMGF1PADDING");
+
+            byte[] encryptedBytes = Base64.decode(encryptedData,Base64.DEFAULT);
+            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+            decryptedData = new String(decryptedBytes);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return decryptedData;
     }
 
 
